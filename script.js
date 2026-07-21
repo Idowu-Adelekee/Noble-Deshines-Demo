@@ -29,13 +29,19 @@ const counterObserver = new IntersectionObserver((entries, observer) => {
 }, { threshold: 0.5 });
 counters.forEach((counter) => counterObserver.observe(counter));
 
+const quoteTrack = document.querySelector('.quote-track');
 const quotes = [...document.querySelectorAll('.quote-track blockquote')];
 let currentQuote = 0;
+const goToQuote = (index) => {
+  currentQuote = (index + quotes.length) % quotes.length;
+  if (quoteTrack) {
+    quoteTrack.style.transform = `translateX(-${currentQuote * 100}%)`;
+  }
+  quotes.forEach((quote, i) => quote.classList.toggle('active', i === currentQuote));
+};
 document.querySelectorAll('[data-slide]').forEach((button) => button.addEventListener('click', () => {
-  quotes[currentQuote].classList.remove('active');
   const direction = button.dataset.slide === 'next' ? 1 : -1;
-  currentQuote = (currentQuote + direction + quotes.length) % quotes.length;
-  quotes[currentQuote].classList.add('active');
+  goToQuote(currentQuote + direction);
 }));
 
 document.querySelectorAll('.faq details').forEach((item) => {
@@ -83,3 +89,47 @@ document.querySelector('#contact-form')?.addEventListener('submit', async (event
     }
   }
 });
+
+// Simple, subtle scroll-reveal animation used across the whole site.
+const revealSelectors = [
+  '.section-title',
+  '.benefits article',
+  '.stats > div',
+  '.logo-row',
+  '.service',
+  '.services-cta',
+  '.project',
+  '.compare > div',
+  '.quote-viewport',
+  '.slider-controls',
+  '.price-card',
+  '.about-copy',
+  '.team article',
+  '.about-cta',
+  '.faq-list',
+  '.contact-grid > *',
+];
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const revealTargets = document.querySelectorAll(revealSelectors.join(','));
+
+if (prefersReducedMotion) {
+  revealTargets.forEach((el) => el.classList.add('in-view'));
+} else {
+  revealTargets.forEach((el, index) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = `${(index % 4) * 80}ms`;
+  });
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -60px 0px' },
+  );
+  revealTargets.forEach((el) => revealObserver.observe(el));
+}
