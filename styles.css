@@ -298,7 +298,7 @@ nav.open {
 }
 
 .benefits h2 {
-  font: 800 24px/1.1;
+  font: 800 px/1.1;
   margin: 14px 0;
 }
 
@@ -1081,4 +1081,12 @@ nav.open {
 /* Helper */
 .icon {
   font-size: 20px;
+}
+
+.eyebrow {
+  display: none !important;
+}
+
+h2 {
+  font-size: 40px !important;
 }
