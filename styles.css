@@ -311,7 +311,7 @@ nav.open {
 }
 
 .section {
-  padding-block: 60px;
+  padding-block: 20px;
 }
 
 .section-title {
@@ -929,7 +929,7 @@ nav.open {
   }
 
   .section {
-    padding-block: 48px;
+    /* padding-block: 20px; */
   }
 }
 
