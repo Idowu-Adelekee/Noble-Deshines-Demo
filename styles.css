@@ -699,6 +699,12 @@ nav.open {
   background: var(--color-yellow-light);
 }
 
+.join-team-button {
+  display: flex !important;
+  gap: 12px;
+  align-items: end;
+}
+
 .hiring > div {
   display: grid;
   place-items: center;
