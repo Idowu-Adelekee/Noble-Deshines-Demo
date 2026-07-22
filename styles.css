@@ -156,7 +156,7 @@ nav.open {
   letter-spacing: -0.09em;
   transform: scaleX(0.82);
   white-space: nowrap;
-  font-size: 64px;
+  font-size: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -839,7 +839,7 @@ nav.open {
 }
 
 .footer-wordmark {
-  font-size: clamp(80px, 12vw, 210px);
+  font-size: clamp(60px, 12vw, 210px);
   margin-top: 60px;
 
   overflow: hidden;
@@ -1043,7 +1043,7 @@ nav.open {
   }
 
   .footer-wordmark {
-    font-size: 78px;
+    font-size: 60px;
   }
 
   .copyright {
