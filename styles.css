@@ -363,6 +363,10 @@ textarea {
   color: var(--color-primary-pink);
 }
 
+.hero-wordmark {
+  margin-bottom: -20px;
+}
+
 .hero h1 {
   font: 800 clamp(29px, 4vw, 55px)/1.02;
   max-width: 760px;
@@ -372,6 +376,10 @@ textarea {
 
 .hero h1 strong {
   color: var(--color-primary-pink);
+}
+
+.bold {
+  font-size: bold;
 }
 
 .button {
