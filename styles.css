@@ -518,6 +518,7 @@ textarea {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 44px;
+  position: relative;
 }
 
 .section-title h2 {
@@ -535,8 +536,28 @@ textarea {
 }
 
 .scribble {
-  font-size: 70px;
+  font-size: 300px;
+  font-size: 120px;
   color: var(--color-primary-pink);
+  /* color: white; */
+  /* position: absolute; */
+  /* opacity: 0.1; */
+  /* right: -10%; */
+  /* top: -90%; */
+}
+
+.scribble--spin {
+  display: inline-block;
+  animation: scribble-spin 10s linear infinite;
+}
+
+@keyframes scribble-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .proof {
@@ -817,11 +838,11 @@ textarea {
 .plan-card {
   perspective: 150rem;
   position: relative;
-  height: 585px;
+  height: 760px;
 }
 
 .plan-card__side {
-  height: 585px;
+  height: 760px;
   transition: all 0.8s ease;
   position: absolute;
   top: 0;
@@ -883,7 +904,6 @@ textarea {
   background-blend-mode: multiply;
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
 }
-
 .plan-card__picture--1 {
   background-image:
     linear-gradient(
@@ -891,7 +911,9 @@ textarea {
       rgba(255, 243, 176, 0.8),
       rgba(255, 233, 137, 0.8)
     ),
-    url(img/nat-5.jpg);
+    url(img/Marketing-Momentum.jpg);
+  background-position: top center;
+  background-blend-mode: multiply;
 }
 
 .plan-card__picture--2 {
@@ -901,7 +923,9 @@ textarea {
       rgba(255, 109, 253, 0.8),
       rgba(248, 43, 251, 0.8)
     ),
-    url(img/nat-6.jpg);
+    url(img/Website-Pro.jpg);
+  background-position: top center;
+  background-blend-mode: multiply;
 }
 
 .plan-card__picture--3 {
@@ -911,7 +935,9 @@ textarea {
       rgba(255, 254, 250, 0.85),
       rgba(255, 247, 214, 0.85)
     ),
-    url(img/nat-7.jpg);
+    url(img/Brand-Builder.jpg);
+  background-position: top center;
+  background-blend-mode: multiply;
 }
 
 .plan-card__heading {
