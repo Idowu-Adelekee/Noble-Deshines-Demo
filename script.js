@@ -1,15 +1,59 @@
-const menuButton = document.querySelector('.menu-button');
+const naviCheckbox = document.querySelector('.navigation__checkbox');
+const naviButton = document.querySelector('.navigation__button');
 const menu = document.querySelector('#menu');
 
-menuButton?.addEventListener('click', () => {
-  const isOpen = menu.classList.toggle('open');
-  menuButton.setAttribute('aria-expanded', String(isOpen));
+naviCheckbox?.addEventListener('change', () => {
+  naviButton?.setAttribute('aria-expanded', String(naviCheckbox.checked));
 });
 
-menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-  menu.classList.remove('open');
-  menuButton.setAttribute('aria-expanded', 'false');
+menu?.querySelectorAll('.navigation__link').forEach((link) => link.addEventListener('click', () => {
+  if (!naviCheckbox) return;
+  naviCheckbox.checked = false;
+  naviButton?.setAttribute('aria-expanded', 'false');
 }));
+
+// Sticky header: fixed at all times, gains a blurred backdrop once the hero
+// has been scrolled past, and hides/reveals smoothly with scroll direction.
+const siteHeader = document.querySelector('header.full-width');
+const hero = document.querySelector('.hero');
+
+if (siteHeader) {
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  const updateHeader = () => {
+    const scrollY = window.scrollY;
+    const heroHeight = hero ? hero.offsetHeight : 0;
+    const pastHero = scrollY > heroHeight * 0.85;
+
+    siteHeader.classList.toggle('header--blurred', pastHero);
+
+    const menuOpen = naviCheckbox?.checked;
+    const scrollingDown = scrollY > lastScrollY;
+
+    if (!menuOpen && pastHero && scrollingDown) {
+      siteHeader.classList.add('header--hidden');
+    } else {
+      siteHeader.classList.remove('header--hidden');
+    }
+
+    lastScrollY = scrollY;
+    ticking = false;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    },
+    { passive: true },
+  );
+
+  updateHeader();
+}
 
 const counters = document.querySelectorAll('[data-count]');
 const counterObserver = new IntersectionObserver((entries, observer) => {
@@ -102,7 +146,7 @@ const revealSelectors = [
   '.compare > div',
   '.quote-viewport',
   '.slider-controls',
-  '.price-card',
+  '.plan-card',
   '.about-copy',
   '.team article',
   '.about-cta',

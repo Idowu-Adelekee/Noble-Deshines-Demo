@@ -31,6 +31,7 @@ body {
   font-size: 20px;
   line-height: 1.5;
   overflow-x: hidden;
+  padding-top: 98px;
 }
 
 img {
@@ -51,9 +52,30 @@ textarea {
 
 .full-width {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   width: 100% !important;
   background-color: #050020;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 900;
+  transition:
+    transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+    background-color 0.5s ease,
+    -webkit-backdrop-filter 0.5s ease,
+    backdrop-filter 0.5s ease;
+}
+
+/* Once the hero has been scrolled past: same brand color, just softened
+   with opacity + a frosted blur behind it. Color value itself never changes. */
+.full-width.header--blurred {
+  background-color: rgba(5, 0, 32, 0.78);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+.full-width.header--hidden {
+  transform: translateY(-100%);
 }
 
 .shell {
@@ -78,70 +100,243 @@ textarea {
   width: 140px;
 }
 
-.menu-button {
+/* ============================= */
+/* NAVIGATION — animated burger  */
+/* (interaction ported from the  */
+/* Natours project, restyled for */
+/* Noble Deshines)               */
+/* ============================= */
+
+.navigation__checkbox {
+  display: none;
+}
+
+.navigation__button {
   background-color: var(--color-primary-pink);
-  width: 40px;
-  height: 40px;
-  border: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
+  height: 58px;
+  width: 58px;
+  position: fixed;
+  top: 10px;
+  right: 40px;
   border-radius: 50%;
-  font-size: 30px;
+  z-index: 2000;
+  box-shadow: -4px 4px 8px rgba(5, 0, 32, 0.3);
+  /* border: 2px solid var(--color-primary-dark); */
+  text-align: center;
   cursor: pointer;
-  border: solid 1px var(--color-primary-dark);
+  transition: transform 0.2s;
+  transform: scale(0.8);
 }
 
-.menu-button span,
-.menu-button span:before {
-  display: block;
-  width: 28px;
-  height: 2px;
-  background: var(--color-primary-dark);
-
-  content: "";
+.navigation__icon,
+.navigation__icon::before,
+.navigation__icon::after {
+  color: #fff !important;
+  background-color: #fff !important;
 }
 
-.menu-button span:before {
-  transform: translateY(6px);
+.navigation__checkbox:checked + .navigation__button .navigation__icon {
+  background-color: transparent !important;
 }
 
-nav {
-  display: flex;
-  position: absolute;
-  right: 0;
-  top: 64px;
-  background: var(--color-primary-dark);
-  color: #fff7d6;
-  padding: 24px;
-  min-width: 200px;
-  flex-direction: column;
-  gap: 16px;
-  border-radius: 2px;
+.navigation__button:hover {
+  transform: translateY(-2px);
+}
+
+.navigation__background {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  position: fixed;
+  top: 15px;
+  right: 45px;
+  background-image: radial-gradient(
+    var(--color-primary-dark),
+    var(--color-primary-dark)
+  );
+  z-index: 1000;
+  transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  transform: scale(0.8);
+}
+
+.navigation__nav {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1500;
 
   opacity: 0;
-  transform: translateY(-12px);
-  visibility: hidden;
-  pointer-events: none;
-
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0s linear 0.3s;
+  width: 0;
+  overflow: hidden;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-nav.open {
+.navigation__list {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation__item {
+  margin: 0.6em;
+}
+
+.navigation__link:link,
+.navigation__link:visited {
+  display: inline-block;
+  font-family: "sora", sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 0.3em 0.6em;
+  color: #fff7d6;
+  text-decoration: none;
+  background-image: linear-gradient(
+    120deg,
+    transparent 0%,
+    transparent 50%,
+    #fff7d6 50%
+  );
+  background-size: 220%;
+  transition: all 0.4s;
+}
+
+.navigation__link:hover,
+.navigation__link:active {
+  background-position: 100%;
+  color: var(--color-primary-pink);
+  transform: translateX(0.3em);
+}
+
+.navigation__item--whatsapp {
+  margin-top: 1.4em;
+}
+
+.navigation__link--whatsapp {
+  background-image: none;
+  background-color: var(--color-primary-pink);
+  color: var(--color-primary-dark);
+  border: 2px solid #fff7d6;
+  border-radius: 50px;
+  font-size: clamp(18px, 2.6vw, 24px);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navigation__link--whatsapp:hover,
+.navigation__link--whatsapp:active {
+  color: var(--color-primary-dark);
+  background-color: #fff7d6;
+  transform: translateY(-2px) translateX(0);
+}
+
+/* FUNCTIONALITY */
+.navigation__checkbox:checked ~ .navigation__background {
+  transform: scale(90);
+}
+
+.navigation__checkbox:checked ~ .navigation__nav {
   opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-  pointer-events: auto;
-
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0s;
+  width: 100%;
 }
+
+/* ICON */
+.navigation__icon {
+  position: relative;
+  margin-top: 29px;
+}
+
+.navigation__icon,
+.navigation__icon::before,
+.navigation__icon::after {
+  width: 24px;
+  height: 2px;
+  background-color: var(--color-primary-dark);
+  display: inline-block;
+}
+
+.navigation__icon::before,
+.navigation__icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  transition: all 0.2s;
+}
+
+.navigation__icon::before {
+  top: -8px;
+}
+
+.navigation__icon::after {
+  top: 8px;
+}
+
+.navigation__button:hover .navigation__icon::before {
+  top: -10px;
+}
+
+.navigation__button:hover .navigation__icon::after {
+  top: 10px;
+}
+
+.navigation__checkbox:checked + .navigation__button .navigation__icon {
+  background-color: transparent;
+}
+
+.navigation__checkbox:checked + .navigation__button .navigation__icon::before {
+  top: 0;
+  transform: rotate(135deg);
+}
+
+.navigation__checkbox:checked + .navigation__button .navigation__icon::after {
+  top: 0;
+  transform: rotate(-135deg);
+}
+
+@media (max-width: 800px) {
+  .navigation__button {
+    height: 52px;
+    width: 52px;
+    top: 16px;
+    right: 16px;
+  }
+
+  .navigation__background {
+    height: 44px;
+    width: 44px;
+    top: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 540px) {
+  .navigation__button {
+    height: 46px;
+    width: 46px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .navigation__background {
+    height: 38px;
+    width: 38px;
+    top: 16px;
+    right: 16px;
+  }
+
+  .navigation__icon {
+    margin-top: 23px;
+  }
+}
+
 .hero {
   text-align: center;
   /* min-height: 970px; */
@@ -599,45 +794,293 @@ nav.open {
   cursor: pointer;
 }
 
+/* ============================= */
+/* PRICING — flip cards          */
+/* (style ported from the        */
+/* Natours "Most popular tours"  */
+/* cards, using Noble Deshines   */
+/* brand colors: card 1 =        */
+/* secondary, 2 = primary,       */
+/* 3 = background)               */
+/* ============================= */
+
 .price-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 32px;
 }
 
-.price-card {
+.plan-card {
+  perspective: 150rem;
+  position: relative;
+  height: 585px;
+}
+
+.plan-card__side {
+  height: 585px;
+  transition: all 0.8s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 6px;
+  overflow: hidden;
   border: 2px solid var(--color-primary-dark);
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  min-height: 585px;
+  box-shadow: -6px 6px rgba(5, 0, 32, 0.9);
 }
 
-.price-card.white {
-  background: var(--color-white);
+.plan-card__side--front {
+  background-color: var(--color-white);
 }
 
-.plan {
-  font: 800 22px;
+.plan-card__side--back {
+  transform: rotateY(180deg);
 }
 
-.price {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
+.plan-card__side--back-1 {
+  background-image: linear-gradient(
+    to right bottom,
+    #fff3b0,
+    var(--color-yellow-light)
+  );
 }
 
-.price strong {
-  font: 800 58px;
+.plan-card__side--back-2 {
+  background-image: linear-gradient(
+    to right bottom,
+    #ff6dfd,
+    var(--color-primary-pink)
+  );
 }
 
-.price ul {
-  padding-left: 20px;
-  line-height: 2;
+.plan-card__side--back-3 {
+  background-image: linear-gradient(
+    to right bottom,
+    #fffefa,
+    var(--color-light-background)
+  );
 }
 
-.price-card .button {
-  margin-top: auto;
+.plan-card:hover .plan-card__side--front {
+  transform: rotateY(-180deg);
+}
+
+.plan-card:hover .plan-card__side--back {
+  transform: rotateY(0);
+}
+
+/* FRONT */
+.plan-card__picture {
+  background-size: cover;
+  background-position: center;
+  height: 230px;
+  background-blend-mode: multiply;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.plan-card__picture--1 {
+  background-image:
+    linear-gradient(
+      to right bottom,
+      rgba(255, 243, 176, 0.8),
+      rgba(255, 233, 137, 0.8)
+    ),
+    url(img/nat-5.jpg);
+}
+
+.plan-card__picture--2 {
+  background-image:
+    linear-gradient(
+      to right bottom,
+      rgba(255, 109, 253, 0.8),
+      rgba(248, 43, 251, 0.8)
+    ),
+    url(img/nat-6.jpg);
+}
+
+.plan-card__picture--3 {
+  background-image:
+    linear-gradient(
+      to right bottom,
+      rgba(255, 254, 250, 0.85),
+      rgba(255, 247, 214, 0.85)
+    ),
+    url(img/nat-7.jpg);
+}
+
+.plan-card__heading {
+  font:
+    800 26px/1.1 "sora",
+    sans-serif;
+  text-align: right;
+  color: var(--color-primary-dark);
+  position: absolute;
+  top: 120px;
+  right: 20px;
+  width: 78%;
+  margin: 0;
+}
+
+.plan-card__heading-span {
+  padding: 8px 14px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.plan-card__heading-span--1 {
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(255, 243, 176, 0.9),
+    rgba(255, 233, 137, 0.9)
+  );
+}
+
+.plan-card__heading-span--2 {
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(255, 109, 253, 0.9),
+    rgba(248, 43, 251, 0.9)
+  );
+  color: #fff7d6;
+}
+
+.plan-card__heading-span--3 {
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(255, 254, 250, 0.95),
+    rgba(255, 247, 214, 0.95)
+  );
+}
+
+.plan-card__details {
+  padding: 26px 24px 0;
+}
+
+.plan-card__blurb {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 14px;
+}
+
+.plan-card__details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-card__details li {
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+}
+
+.plan-card__details li:not(:last-child) {
+  border-bottom: 1px solid rgba(5, 0, 32, 0.15);
+}
+
+/* BACK */
+.plan-card__cta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  text-align: center;
+}
+
+.plan-card__price-box {
+  text-align: center;
+  color: var(--color-primary-dark);
+  margin-bottom: 34px;
+}
+
+.plan-card__side--back-2 .plan-card__price-box {
+  color: #fff7d6;
+}
+
+.plan-card__price-only {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.plan-card__price-value {
+  font:
+    800 52px "sora",
+    sans-serif;
+  margin: 0;
+}
+
+.plan-card__price-value span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.plan-card .button {
+  font-size: 18px;
+  padding: 12px 24px;
+}
+
+@media (max-width: 900px) {
+  .price-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* Stack on mobile / touch: no perspective flip, both sides shown
+   one after another, matching the natours mobile fallback. */
+@media (max-width: 800px), (hover: none) {
+  .plan-card {
+    height: auto;
+    border-radius: 6px;
+    background-color: var(--color-white);
+    box-shadow: -6px 6px rgba(5, 0, 32, 0.9);
+    border: 2px solid var(--color-primary-dark);
+  }
+
+  .plan-card__side {
+    height: auto;
+    position: relative;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  .plan-card__side--back {
+    transform: rotateY(0);
+    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .plan-card:hover .plan-card__side--front {
+    transform: rotateY(0);
+  }
+
+  .plan-card__details {
+    padding: 20px 24px 30px;
+  }
+
+  .plan-card__cta {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translate(0);
+    width: 100%;
+    padding: 40px 24px 30px;
+  }
+
+  .plan-card__price-box {
+    margin-bottom: 20px;
+  }
+
+  .plan-card__price-value {
+    font-size: 42px;
+  }
 }
 
 .about-copy {
@@ -1011,10 +1454,6 @@ nav.open {
 
   .compare {
     grid-template-columns: 1fr;
-  }
-
-  .price-card {
-    min-height: 520px;
   }
 
   .team {
